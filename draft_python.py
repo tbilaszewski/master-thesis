@@ -12,14 +12,15 @@
 #     name: python3
 # ---
 
-# Imports
+# +
 import json
 import tweepy
 import re
 from textblob import TextBlob
 import numpy as np
 import yfinance as yf
-# Twitter api setup
+import requests
+import json
 # +
 config_file = '.config.json'
 with open(config_file) as fh:
@@ -29,7 +30,6 @@ auth = tweepy.AppAuthHandler(
     config['consumer_key'], config['consumer_secret']
 )
 twitter_api = tweepy.API(auth)
-# 
 # +
 def analyze(input_text):
     text = clean_input(input_text)
@@ -54,6 +54,8 @@ def print_info(tweets):
         analyze(info.text)
         print("\n")
 
+def get_stock_data():
+    return
 
 def clean_input(tweet):
     return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z])|(\w+:\/\/\S+)", " ", tweet).split())
@@ -67,5 +69,21 @@ all_tweets = twitter_api.user_timeline(screen_name='elonmusk',
                                # Necessary to keep full_text
                                # otherwise only the first 140 words are extracted
                                )
-print_info(all_tweets)
+# print_info(all_tweets)
+# print(get_stock_data())
+
+
+from alpha_vantage.timeseries import TimeSeries
+import datetime
+
+ts = TimeSeries(key=config['alpha_vantage_token'], output_format='pandas')
+
+
+intraday_data, data_info = ts.get_intraday('TSLA', outputsize='full', interval='1min')
+# Print the information of the data
+
+refreshed_date = data_info['3. Last Refreshed']
+
+print(intraday_data.to_csv("stocks_{}.csv".format(refreshed_date)))
+
 
