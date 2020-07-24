@@ -55,7 +55,7 @@ predictions
 with open('classifier_trained.pkl', 'wb') as fid:
     pickle.dump(pipeline, fid)    
 
-print(pipeline.predict([]'This sucks'))
+print(pipeline.predict(['tree']))
 
 
 
