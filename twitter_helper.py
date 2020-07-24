@@ -45,8 +45,27 @@ class TweetTimeLineHelper:
         func(status)
 
 
-def cleanTweet(input):
-  return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z])|(\w+:\/\/\S+)", " ", input).split())
+# +
+from nltk.tokenize import word_tokenize
+from string import punctuation 
+from nltk.corpus import stopwords 
+from nltk.stem import WordNetLemmatizer 
+
+_stopwords = set(stopwords.words('english') + list(punctuation) + ['AT_USER','URL'])
+_lematizer = WordNetLemmatizer()
+
+def processTweet(tweet):
+    tweet = tweet.lower()
+    tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', tweet)
+    tweet = re.sub('@[^\s]+', 'AT_USER', tweet)
+    tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
+    tweet = word_tokenize(tweet)
+    tweet = [_lematizer.lemmatize(word) for word in tweet]
+    print(tweet)
+    return [word for word in tweet if word not in _stopwords]
+
+
+# -
 
 def analyze(input_text, analyzer=tb.en.sentiments.NaiveBayesAnalyzer()):
   sentiment = tb.TextBlob(input_text, analyzer=analyzer).sentiment
