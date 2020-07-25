@@ -55,10 +55,6 @@ predictions
 with open('classifier_trained.pkl', 'wb') as fid:
     pickle.dump(pipeline, fid) 
 
-print(pipeline.predict(['it is dumb']))
-print(pipeline.predict_proba(['it is dumb']))
-
-
 
 
 
