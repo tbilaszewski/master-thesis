@@ -61,12 +61,13 @@ def processTweet(tweet):
     tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
     tweet = word_tokenize(tweet)
     tweet = [_lematizer.lemmatize(word) for word in tweet]
-    print(tweet)
-    return [word for word in tweet if word not in _stopwords]
+    tweet_words = [word for word in tweet if word not in _stopwords]
+    return ' '.join(map(str, tweet_words))
 
+# +
+# processTweet('aaaa sth sdk #change @Mike')
 
-# -
-
-def analyze(input_text, analyzer=tb.en.sentiments.NaiveBayesAnalyzer()):
-  sentiment = tb.TextBlob(input_text, analyzer=analyzer).sentiment
-  return [sentiment.classification, getattr(sentiment,'p_{}'.format(sentiment.classification))]
+# +
+# def analyze(input_text, analyzer=tb.en.sentiments.NaiveBayesAnalyzer()):
+#   sentiment = tb.TextBlob(input_text, analyzer=analyzer).sentiment
+#   return [sentiment.classification, getattr(sentiment,'p_{}'.format(sentiment.classification))]

@@ -18,7 +18,7 @@ with open('tweets_data.csv', newline='', encoding='latin-1') as csvfile:
     for row in csv_reader:
         classification = sentiment_dict[row[0]]
         text = row[5]
-        train_data_tweets.append(' '.join(map(str, processTweet(text))))
+        train_data_tweets.append(processTweet(text))
         train_data_classification.append(classification)
 
 # +
@@ -53,9 +53,11 @@ predictions
 
 
 with open('classifier_trained.pkl', 'wb') as fid:
-    pickle.dump(pipeline, fid)    
+    pickle.dump(pipeline, fid) 
 
-print(pipeline.predict(['tree']))
+print(pipeline.predict(['it is dumb']))
+print(pipeline.predict_proba(['it is dumb']))
+
 
 
 
